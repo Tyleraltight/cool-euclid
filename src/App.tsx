@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { Plus, Upload, TrendingUp, TrendingDown } from 'lucide-react';
+import { Plus, Upload, TrendingUp, TrendingDown, Search, X, Database, Download } from 'lucide-react';
 import { getStoredTransactions, saveStoredTransactions } from './utils/storage';
 import type { Transaction } from './utils/storage';
 import { formatCurrency } from './utils/currency';
@@ -13,6 +13,11 @@ function App() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showImporter, setShowImporter] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  
+  // New States for Search and Backup popover
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const [showBackupPopover, setShowBackupPopover] = useState(false);
 
   // Persist to localStorage on change
   useEffect(() => {
@@ -48,6 +53,85 @@ function App() {
     setTransactions(prev => [...prev, tx]);
     showToast('Transaction added');
   }, [showToast]);
+
+  // Export local state to JSON backup file
+  const handleExportData = useCallback(() => {
+    try {
+      const data = {
+        version: '1.0',
+        exportedAt: new Date().toISOString(),
+        transactions: transactions,
+      };
+      
+      const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(
+        JSON.stringify(data, null, 2)
+      )}`;
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute('href', jsonString);
+      const dateStr = new Date().toISOString().split('T')[0];
+      downloadAnchor.setAttribute('download', `kauri_backup_${dateStr}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      
+      showToast('Backup file downloaded');
+      setShowBackupPopover(false);
+    } catch (error) {
+      showToast('Failed to export data');
+    }
+  }, [transactions, showToast]);
+
+  // Import JSON backup data and deduplicate against existing local storage
+  const handleImportData = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileReader = new FileReader();
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    fileReader.onload = (event) => {
+      try {
+        const result = event.target?.result;
+        if (typeof result !== 'string') return;
+        const parsed = JSON.parse(result);
+
+        if (parsed && Array.isArray(parsed.transactions)) {
+          const importedTxs = parsed.transactions as Transaction[];
+          
+          setTransactions(prev => {
+            const existingKeys = new Set(
+              prev.map(t => `${t.date}|${t.amount}|${t.originalPayee}`)
+            );
+            const unique = importedTxs.filter(
+              t => !existingKeys.has(`${t.date}|${t.amount}|${t.originalPayee}`)
+            );
+            
+            showToast(`Restored: ${unique.length} new items added`);
+            return [...prev, ...unique];
+          });
+        } else {
+          showToast('Invalid backup file structure');
+        }
+      } catch (error) {
+        showToast('Error reading backup file');
+      }
+      setShowBackupPopover(false);
+      e.target.value = ''; // Reset input
+    };
+
+    fileReader.readAsText(files[0]);
+  }, [showToast]);
+
+  // Compute filtered display transactions for list
+  const displayTransactions = useMemo(() => {
+    if (!searchQuery.trim()) return transactions;
+    const query = searchQuery.toLowerCase().trim();
+    return transactions.filter(tx => 
+      tx.payee.toLowerCase().includes(query) || 
+      tx.category.toLowerCase().includes(query) ||
+      (tx.bank && tx.bank.toLowerCase().includes(query)) ||
+      tx.amount.toString().includes(query) ||
+      tx.amountNZD.toString().includes(query)
+    );
+  }, [transactions, searchQuery]);
 
   const handleDelete = useCallback((id: string) => {
     setTransactions(prev => prev.filter(t => t.id !== id));
@@ -118,23 +202,103 @@ function App() {
       </div>
 
       {/* Action buttons */}
-      <div className="action-bar">
-        <button
-          className="action-btn primary"
-          onClick={() => setShowAddModal(true)}
-          id="open-add-modal"
-        >
-          <Plus size={18} />
-          Add
-        </button>
-        <button
-          className="action-btn"
-          onClick={() => setShowImporter(!showImporter)}
-          id="toggle-importer"
-        >
-          <Upload size={18} />
-          Import CSV
-        </button>
+      <div className={`action-bar ${isSearching ? 'searching' : ''}`}>
+        {/* Left Actions */}
+        <div className="action-left-group">
+          <button
+            className="action-btn primary pressable"
+            onClick={() => setShowAddModal(true)}
+            id="open-add-modal"
+          >
+            <Plus size={14} />
+            <span>Add</span>
+          </button>
+          <button
+            className="action-btn icon-only pressable"
+            onClick={() => setShowImporter(!showImporter)}
+            id="toggle-importer"
+            title="Import bank CSV"
+          >
+            <Upload size={14} />
+          </button>
+        </div>
+
+        {/* Right Tools (Search & Backup) */}
+        <div className="action-right-group">
+          {/* Search tool */}
+          <div className="search-container">
+            <div className="search-input-wrapper">
+              <input
+                type="text"
+                placeholder="Search merchant, tag, amount..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input"
+                id="tx-search-input"
+                autoComplete="off"
+              />
+              {searchQuery && (
+                <button
+                  className="search-clear-btn"
+                  onClick={() => setSearchQuery('')}
+                >
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+            <button
+              className={`tool-btn pressable ${isSearching ? 'active' : ''}`}
+              onClick={() => {
+                if (isSearching) {
+                  setSearchQuery('');
+                  setIsSearching(false);
+                } else {
+                  setIsSearching(true);
+                  setTimeout(() => {
+                    document.getElementById('tx-search-input')?.focus();
+                  }, 50);
+                }
+              }}
+              title="Search transactions"
+            >
+              {isSearching ? <X size={14} /> : <Search size={14} />}
+            </button>
+          </div>
+
+          {/* Backup Database Popover */}
+          <div style={{ position: 'relative' }}>
+            <button
+              className={`tool-btn pressable ${showBackupPopover ? 'active' : ''}`}
+              onClick={() => setShowBackupPopover(!showBackupPopover)}
+              title="Backup & Restore data"
+            >
+              <Database size={14} />
+            </button>
+
+            {showBackupPopover && (
+              <div className="backup-popover">
+                <button className="popover-item" onClick={handleExportData}>
+                  <Download size={12} />
+                  <span>Export Backup (.json)</span>
+                </button>
+                <button
+                  className="popover-item"
+                  onClick={() => document.getElementById('backup-file-input')?.click()}
+                >
+                  <Upload size={12} />
+                  <span>Restore Backup (.json)</span>
+                </button>
+                <input
+                  type="file"
+                  id="backup-file-input"
+                  accept=".json"
+                  onChange={handleImportData}
+                  style={{ display: 'none' }}
+                />
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* CSV Importer (collapsible) */}
@@ -150,9 +314,13 @@ function App() {
       {/* Transaction list */}
       <div className="section-header">
         <h2>Transactions</h2>
-        <span className="count">{transactions.length} total</span>
+        <span className="count">
+          {displayTransactions.length !== transactions.length 
+            ? `${displayTransactions.length} of ${transactions.length}`
+            : `${transactions.length}`} total
+        </span>
       </div>
-      <TransactionList transactions={transactions} onDelete={handleDelete} />
+      <TransactionList transactions={displayTransactions} onDelete={handleDelete} />
 
       {/* Add transaction modal */}
       <AddTransactionModal
