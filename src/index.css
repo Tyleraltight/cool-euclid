@@ -269,42 +269,42 @@ input::placeholder {
   background: var(--bg-surface);
   border-radius: var(--radius-lg);
   border: 1px solid var(--bg-glass-border);
-  padding: var(--space-md);
+  padding: 10px 12px;
   box-shadow: var(--shadow-sm);
 }
 
 .summary-card .label {
-  font-size: 0.8rem;
+  font-size: 0.725rem;
   color: var(--text-secondary);
   font-weight: 500;
-  margin-bottom: var(--space-xs);
+  margin-bottom: 2px;
 }
 
 .summary-card .value {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 /* ---- Balance hero ---- */
 .balance-hero {
   text-align: center;
-  padding: var(--space-xl) var(--space-md) var(--space-lg);
+  padding: 8px var(--space-md) 10px;
 }
 
 .balance-hero .label {
-  font-size: 0.85rem;
+  font-size: 0.775rem;
   font-weight: 500;
   color: var(--text-secondary);
-  margin-bottom: var(--space-xs);
+  margin-bottom: 2px;
 }
 
 .balance-hero .amount {
   font-family: var(--font-display);
-  font-size: 2.5rem;
+  font-size: 2.1rem;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 /* ---- App header (Fixed & Blended) ---- */
@@ -312,7 +312,7 @@ input::placeholder {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-md) var(--space-md) var(--space-lg);
+  padding: var(--space-md) var(--space-md) var(--space-md);
   position: fixed;
   top: 0;
   left: 50%;
@@ -342,10 +342,10 @@ input::placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-sm);
-  padding: var(--space-sm) var(--space-md);
+  gap: 6px;
+  padding: 6px 14px;
   border-radius: var(--radius-full);
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 600;
   background: var(--bg-surface-raised);
   color: var(--text-primary);
@@ -681,8 +681,8 @@ input::placeholder {
 
 /* ---- Insights Panel ---- */
 .insights-card {
-  margin: 0 var(--space-md) var(--space-md);
-  padding: var(--space-md);
+  margin: 0 var(--space-md) 10px;
+  padding: 10px 12px;
   background: var(--bg-surface);
   border-radius: var(--radius-lg);
   border: 1px solid var(--bg-glass-border);
@@ -693,11 +693,11 @@ input::placeholder {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--space-md);
+  margin-bottom: 10px;
 }
 
 .insights-header h3 {
-  font-size: 0.9rem;
+  font-size: 0.825rem;
   font-weight: 600;
   color: var(--text-primary);
   display: flex;
@@ -716,8 +716,8 @@ input::placeholder {
 }
 
 .insights-toggle-btn {
-  padding: 4px 10px;
-  font-size: 0.7rem;
+  padding: 3px 8px;
+  font-size: 0.65rem;
   font-weight: 600;
   border-radius: var(--radius-full);
   color: var(--text-secondary);
@@ -732,19 +732,19 @@ input::placeholder {
 .insights-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-md);
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .insights-stat {
   background: var(--bg-surface-raised);
-  padding: var(--space-sm) var(--space-md);
+  padding: 6px 10px;
   border-radius: var(--radius-md);
   border: 1px solid rgba(255, 255, 255, 0.02);
 }
 
 .insights-stat .stat-label {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: var(--text-tertiary);
   margin-bottom: 2px;
   text-transform: uppercase;
@@ -753,24 +753,24 @@ input::placeholder {
 
 .insights-stat .stat-value {
   font-family: var(--font-display);
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 700;
 }
 
 .insights-progress-section {
   background: var(--bg-surface-raised);
-  padding: var(--space-sm) var(--space-md);
+  padding: 6px 10px;
   border-radius: var(--radius-md);
   border: 1px solid rgba(255, 255, 255, 0.02);
-  margin-bottom: var(--space-md);
+  margin-bottom: 10px;
 }
 
 .insights-progress-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.75rem;
-  margin-bottom: 6px;
+  font-size: 0.7rem;
+  margin-bottom: 4px;
 }
 
 .insights-progress-label {

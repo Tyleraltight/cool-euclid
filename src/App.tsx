@@ -74,9 +74,9 @@ function App() {
       {/* Sticky header (Apple: glass material) */}
       <header className="app-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <h1 style={{ fontSize: '1.25rem', margin: 0 }}>🌿 Kauri</h1>
+          <h1 style={{ fontSize: '1.1rem', margin: 0 }}>🌿 Kauri</h1>
           <span style={{
-            fontSize: '0.75rem',
+            fontSize: '0.7rem',
             color: 'var(--text-tertiary)',
             fontWeight: 500,
           }}>
@@ -86,7 +86,7 @@ function App() {
       </header>
 
       {/* Balance hero */}
-      <div className="balance-hero" style={{ paddingTop: '76px' }}>
+      <div className="balance-hero" style={{ paddingTop: '62px' }}>
         <div className="label">Net Balance</div>
         <div className="amount" style={{
           color: totalBalance >= 0 ? 'var(--accent-green)' : 'var(--accent-red)',
