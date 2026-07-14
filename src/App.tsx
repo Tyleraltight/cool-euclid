@@ -6,6 +6,7 @@ import { formatCurrency } from './utils/currency';
 import CSVImporter from './components/CSVImporter';
 import AddTransactionModal from './components/AddTransactionModal';
 import TransactionList from './components/TransactionList';
+import InsightsPanel from './components/InsightsPanel';
 
 function App() {
   const [transactions, setTransactions] = useState<Transaction[]>(() => getStoredTransactions());
@@ -142,6 +143,9 @@ function App() {
           <CSVImporter onImport={handleImport} />
         </div>
       )}
+
+      {/* Insights Panel */}
+      <InsightsPanel transactions={transactions} />
 
       {/* Transaction list */}
       <div className="section-header">
