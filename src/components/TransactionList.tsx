@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { Trash2, ShoppingCart, Coffee, Car, Zap, Home, Package, Banknote, HelpCircle } from 'lucide-react';
 import type { Transaction } from '../utils/storage';
 import { formatCurrency } from '../utils/currency';
@@ -28,6 +28,44 @@ const ALL_CATEGORIES = ['All', ...Object.keys(CATEGORY_CONFIG)];
 
 export default function TransactionList({ transactions, onDelete }: TransactionListProps) {
   const [activeFilter, setActiveFilter] = useState('All');
+  
+  // Drag to scroll refs for desktop mouse support
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStart = useRef({ x: 0, scrollLeft: 0, rawX: 0 });
+  const clickPreventedRef = useRef(false);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setIsDragging(true);
+    dragStart.current = {
+      x: e.pageX - el.offsetLeft,
+      scrollLeft: el.scrollLeft,
+      rawX: e.pageX,
+    };
+    clickPreventedRef.current = false;
+  };
+
+  const handleMouseLeaveOrUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const el = scrollRef.current;
+    if (!el) return;
+    
+    // If moved more than 5px, we consider it a drag and prevent click events on release
+    if (Math.abs(e.pageX - dragStart.current.rawX) > 5) {
+      clickPreventedRef.current = true;
+    }
+    
+    const x = e.pageX - el.offsetLeft;
+    const walk = (x - dragStart.current.x) * 1.5; // Drag speed multiplier
+    el.scrollLeft = dragStart.current.scrollLeft - walk;
+  };
 
   const filtered = useMemo(() => {
     const list = activeFilter === 'All'
@@ -62,12 +100,23 @@ export default function TransactionList({ transactions, onDelete }: TransactionL
   return (
     <div>
       {/* Filter bar */}
-      <div className="filter-bar">
+      <div
+        className="filter-bar"
+        ref={scrollRef}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeaveOrUp}
+        onMouseUp={handleMouseLeaveOrUp}
+        onMouseMove={handleMouseMove}
+        style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+      >
         {ALL_CATEGORIES.map((cat) => (
           <button
             key={cat}
             className={`filter-chip ${activeFilter === cat ? 'active' : ''}`}
-            onClick={() => setActiveFilter(cat)}
+            onClick={() => {
+              if (clickPreventedRef.current) return;
+              setActiveFilter(cat);
+            }}
           >
             {cat}
           </button>
