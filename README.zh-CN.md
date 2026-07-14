@@ -1,11 +1,13 @@
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-# Kauri Budget
+# Kauri-Budget
+
+🌐 在线体验: https://kauri-budget.vercel.app/
 
 专为新西兰生活打造的极致极简、隐私第一的个人财务记账 App。提供高光深色质感与完全的数据主权。
 
 <p align="center">
-  <img src="public/screenshot.jpg" width="260" alt="Kauri Budget Preview">
+  <img src="public/screenshot.jpg" width="260" alt="Kauri-Budget Preview">
 </p>
 
 ---
@@ -19,8 +21,17 @@
 
 ---
 
+## 技术栈
+
+*   **React 19 & TypeScript**：类型安全的客户端应用逻辑开发。
+*   **Vite**：极速的热重载开发服务器与静态包打包器。
+*   **Vanilla CSS**：基于原生 CSS 变量搭建的高自定义响应式设计系统。
+*   **Lucide React**：轻量、清晰的现代化矢量 UI 图标库。
+
+---
+
 ## 不易察觉的精致细节 (Tips)
 
 *   **PC 鼠标左右拖动**：在电脑浏览器上，您可以通过鼠标左键直接按住并左右拖拽横向的“交易分类栏”，获得如移动端手势滑屏般的流畅体验。
 *   **共享空间搜索框**：点击检索 🔍，左侧的 Add 和上传按钮会向左平滑淡出隐藏，搜索框在同排横向以弹簧动效向左侧拉伸展开，空间利用率极高。
-*   **重合双国旗徽标**：当录入或导入非纽币（如 CNY / USD）的交易时，左侧标志自动呈现为“本币与外币左右交叠的重合双国旗”（如 🇨🇳 与 🇳🇿 左右重合），直观展示汇率换算关系。
+*   **重合双国旗徽标**：当录入或导入非纽币（如 CNY / USD）的交易时，侧边标志自动呈现为“本币与外币左右交叠的重合双国旗”（如 🇨🇳 与 🇳🇿 左右重合），直观展示汇率换算关系。
