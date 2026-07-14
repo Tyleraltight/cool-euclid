@@ -1,8 +1,12 @@
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 # Kauri Budget
 
 A minimalist, privacy-first personal finance tracker tailored for New Zealanders. Designed with high-fidelity dark aesthetics and complete data sovereignty.
 
-![Kauri Budget Preview](public/screenshot.jpg)
+<p align="center">
+  <img src="public/screenshot.jpg" width="260" alt="Kauri Budget Preview">
+</p>
 
 ---
 

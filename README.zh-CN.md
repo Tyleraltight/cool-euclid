@@ -1,8 +1,12 @@
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 # Kauri Budget
 
 专为新西兰生活打造的极致极简、隐私第一的个人财务记账 App。提供高光深色质感与完全的数据主权。
 
-![Kauri Budget Preview](public/screenshot.jpg)
+<p align="center">
+  <img src="public/screenshot.jpg" width="260" alt="Kauri Budget Preview">
+</p>
 
 ---
 
