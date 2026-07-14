@@ -1,32 +1,22 @@
-# React + TypeScript + Vite
+# Kauri Budget
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A minimalist, privacy-first personal finance tracker tailored for New Zealanders. Designed with high-fidelity dark aesthetics and complete data sovereignty.
 
-Currently, two official plugins are available:
+![Kauri Budget Preview](public/screenshot.jpg)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features & Advantages
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+*   **Offline-First & Absolute Privacy**: All your financial records are stored 100% locally within your browser's secure physical sandbox (`localStorage`). Zero cloud databases, zero data uploading, and zero tracking.
+*   **Intelligent NZ Bank CSV Importer**: Simply drag and drop CSV statements from New Zealand banks (ANZ, ASB, Westpac, BNZ). Transactions are parsed, smart-categorized, and deduplicated automatically.
+*   **Zero-Server Backup & Sync**: Export your ledger as a local JSON file and restore it on other devices. A built-in deduplication algorithm compares transaction fingerprints to prevent duplicated entries, enabling secure cross-device alignment without any server.
+*   **Lightweight Insights**: Track your weekly, monthly, and yearly outgoings with visual progress meters highlighting your top spending category and daily averages.
 
-## Expanding the Oxlint configuration
+---
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Hidden Details & Tips
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+*   **PC Mouse Drag-to-Scroll**: On desktop browsers, you can press and drag the horizontal category filter bar with your mouse just like swiping on a phone screen.
+*   **Space-Sharing Search Bar**: Clicking the 🔍 icon smoothly slides and fades out the left actions (Add and Import), allowing the search bar to organically expand horizontally using spring physics to maximize space.
+*   **Dual-Overlapping Flags**: For foreign currency records (e.g., USD, CNY), the merchant logo automatically converts into a country flag overlap (e.g., 🇨🇳 over 🇳🇿), clearly displaying the original and base currency conversion path.
