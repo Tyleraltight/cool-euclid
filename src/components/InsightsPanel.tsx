@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Lightbulb, BarChart2 } from 'lucide-react';
+import { BarChart2 } from 'lucide-react';
 import type { Transaction } from '../utils/storage';
 import { formatCurrency } from '../utils/currency';
 
@@ -67,31 +67,6 @@ export default function InsightsPanel({ transactions }: InsightsPanelProps) {
     };
   }, [periodTransactions, period]);
 
-  // Generate localized NZ advice sage tip
-  const sageTip = useMemo(() => {
-    if (stats.expense === 0) {
-      return "No expenses recorded in this period. The Kauri tree is thriving in pure sunlight! 🌿";
-    }
-
-    if (stats.topCategory === 'Groceries' && stats.topCategoryPercent > 30) {
-      return `Feeding the Pak'n Save or Countdown beast? Groceries take up ${stats.topCategoryPercent}% of your spend. Consider bulk buying or grabbing odd-bunch veggies! 🛒`;
-    }
-
-    if (stats.topCategory === 'Eating Out' && stats.topCategoryPercent > 20) {
-      return `Too many Flat Whites or Uber Eats deliveries? Dining out is ${stats.topCategoryPercent}% of your budget. Brewing coffee at home could save you a gold coin! ☕`;
-    }
-
-    if (stats.topCategory === 'Transport & Fuel' && stats.topCategoryPercent > 25) {
-      return `Fuel prices at BP/Z Energy got you down? Transport is ${stats.topCategoryPercent}% of your period expenses. Check out Gaspy or top up AT Hop wisely! 🚗`;
-    }
-
-    if (stats.dailyAverage > 150) {
-      return "Daily average spend is quite high. Make sure those Sole Trader tax deductions are flagged if applicable! 📈";
-    }
-
-    return "Looking great! Your cash flow control is solid. The Kauri tree is growing strong and steady! 🌿";
-  }, [stats]);
-
   return (
     <div className="insights-card stagger-item">
       {/* Header with period toggle switcher */}
@@ -114,7 +89,7 @@ export default function InsightsPanel({ transactions }: InsightsPanelProps) {
       </div>
 
       {/* Grid of stats */}
-      <div className="insights-grid">
+      <div className="insights-grid" style={{ marginBottom: stats.expense > 0 && stats.topCategory !== 'None' ? 'var(--space-md)' : '0' }}>
         <div className="insights-stat">
           <div className="stat-label">Total Out</div>
           <div className="stat-value" style={{ color: stats.expense > 0 ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
@@ -131,7 +106,7 @@ export default function InsightsPanel({ transactions }: InsightsPanelProps) {
 
       {/* Top Spending category progress bar */}
       {stats.expense > 0 && stats.topCategory !== 'None' && (
-        <div className="insights-progress-section">
+        <div className="insights-progress-section" style={{ marginBottom: '0' }}>
           <div className="insights-progress-header">
             <span className="insights-progress-label">
               Top Sector: {stats.topCategory}
@@ -148,14 +123,6 @@ export default function InsightsPanel({ transactions }: InsightsPanelProps) {
           </div>
         </div>
       )}
-
-      {/* Sage advice tip card */}
-      <div className="insights-tip-box">
-        <Lightbulb size={16} style={{ color: 'var(--accent-amber)', flexShrink: 0, marginTop: '2px' }} />
-        <div className="insights-tip-text">
-          {sageTip}
-        </div>
-      </div>
     </div>
   );
 }

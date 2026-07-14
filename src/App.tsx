@@ -86,7 +86,7 @@ function App() {
       </header>
 
       {/* Balance hero */}
-      <div className="balance-hero">
+      <div className="balance-hero" style={{ paddingTop: '76px' }}>
         <div className="label">Net Balance</div>
         <div className="amount" style={{
           color: totalBalance >= 0 ? 'var(--accent-green)' : 'var(--accent-red)',

@@ -307,16 +307,21 @@ input::placeholder {
   letter-spacing: -0.03em;
 }
 
-/* ---- App header (Transparent) ---- */
+/* ---- App header (Fixed & Blended) ---- */
 .app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-md) var(--space-md) var(--space-xs);
-  position: sticky;
+  padding: var(--space-md) var(--space-md) var(--space-lg);
+  position: fixed;
   top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
   z-index: 10;
-  background: transparent;
+  /* Blends with Revolut top color #0036cc and fades to transparent */
+  background: linear-gradient(180deg, #0036cc 0%, rgba(0, 54, 204, 0.95) 50%, rgba(2, 4, 9, 0) 100%);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   border-bottom: none;
