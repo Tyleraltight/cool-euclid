@@ -175,13 +175,13 @@ export default function TransactionList({ transactions, onDelete }: TransactionL
                         )}
                         {isMultiCurrency && (
                           <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)' }}>
-                            ({formatCurrency(tx.amount, tx.currency)})
+                            (= {formatCurrency(tx.amountNZD, 'NZD')})
                           </span>
                         )}
                       </div>
                     </div>
                     <div className={`tx-amount ${isIncome ? 'income' : 'expense'}`}>
-                      {isIncome ? '+' : ''}{formatCurrency(tx.amountNZD, 'NZD')}
+                      {isIncome ? '+' : ''}{formatCurrency(tx.amount, tx.currency)}
                     </div>
                     <button
                       className="tx-delete pressable"
