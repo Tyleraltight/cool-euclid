@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Plus, Upload, TrendingUp, TrendingDown, Search, X, Database, Download } from 'lucide-react';
-import { getStoredTransactions, saveStoredTransactions } from './utils/storage';
+import { getStoredTransactions, saveStoredTransactions, saveStoredRates } from './utils/storage';
 import type { Transaction } from './utils/storage';
 import { formatCurrency } from './utils/currency';
 import CSVImporter from './components/CSVImporter';
@@ -18,6 +18,34 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [showBackupPopover, setShowBackupPopover] = useState(false);
+
+  // Fetch real-time exchange rates from public API on mount
+  useEffect(() => {
+    const fetchRates = async () => {
+      try {
+        const res = await fetch('https://open.er-api.com/v6/latest/NZD');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && data.result === 'success' && data.rates) {
+          const cnyRate = data.rates.CNY;
+          const usdRate = data.rates.USD;
+          if (cnyRate && usdRate) {
+            const newRates = {
+              NZD: 1.0,
+              CNY: parseFloat((1 / cnyRate).toFixed(4)),
+              USD: parseFloat((1 / usdRate).toFixed(4)),
+              lastUpdated: new Date().toISOString().split('T')[0],
+            };
+            saveStoredRates(newRates);
+            console.log('Real-time exchange rates updated:', newRates);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch real-time exchange rates, using fallback defaults:', err);
+      }
+    };
+    fetchRates();
+  }, []);
 
   // Persist to localStorage on change
   useEffect(() => {

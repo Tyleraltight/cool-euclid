@@ -25,8 +25,8 @@ const STORAGE_KEYS = {
 
 const DEFAULT_RATES: CurrencyRates = {
   NZD: 1.0,
-  CNY: 0.22, // Static approximation: 1 CNY = 0.22 NZD
-  USD: 1.62, // Static approximation: 1 USD = 1.62 NZD
+  CNY: 0.254, // Updated approximation: 1 CNY = 0.254 NZD (1 NZD ≈ 3.937 CNY)
+  USD: 1.69,  // Updated approximation: 1 USD = 1.69 NZD (1 NZD ≈ 0.59 USD)
   lastUpdated: new Date().toISOString().split('T')[0],
 };
 
